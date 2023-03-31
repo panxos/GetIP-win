@@ -52,16 +52,20 @@ $table | Sort-Object "Interfaz de red" | Format-Table -AutoSize
 - Ejecuta el siguiente comando:
 
 ```cmd
-powershell -File "script.ps1"
+powershell -File "getips.ps1"
 ```
 
 - Verás una salida similar a esta:
 
 ```
-InterfaceAlias IPAddress   PrefixLength DefaultGateway DNSServer
--------------- --------   ------------ -------------- ---------
-Ethernet       192.168.0.2           24     192.168.0.1 8.8.8.8, 8.8.4.4
-Wi-Fi          10.0.0.3              24       10.0.0.1 1.1.1.1, 1.0.0.1
+Interfaz de red               Dirección IP   Prefijo Gateway      Servidores DNS
+---------------               ------------   ------- -------      --------------
+Ethernet 2                    10.200.235.70       24 10.200.235.1 94.140.14.49, 94.140.14.59, 1.1.1.1
+Loopback Pseudo-Interface 1   127.0.0.1            8
+Loopback Pseudo-Interface 1   127.0.0.1            8
+Npcap Loopback Adapter        169.254.228.70      16
+VMware Network Adapter VMnet3 192.168.153.1       24
+VMware Network Adapter VMnet4 172.22.154.1        24
 ```
 
 ## Parámetros
@@ -78,16 +82,16 @@ Para que puedas usar el script desde cualquier ruta del sistema operativo, tiene
 
 Puedes guardar el script en un archivo con extensión .ps1 y ejecutarlo desde la línea de comandos usando el parámetro -File de powershell y la ruta completa del archivo1. Por ejemplo:
 ```
-powershell -File "C:\Program Files\Folder\script.ps1" -Verbose -Restart
+powershell -File "C:\Program Files\Folder\getips.ps11" -Verbose -Restart
 ```
 Puedes agregar la ruta del script a la variable de entorno PATH, que es una lista de directorios donde Windows busca los programas ejecutables. Así podrías ejecutar el script sin tener que escribir la ruta completa cada vez. Para hacer esto
 Puedes crear un alias para el script, que es un nombre corto que puedes usar en lugar de la ruta completa. Para hacer esto, puedes usar el cmdlet New-Alias de powershell y especificar el nombre del alias y la ruta del script. Por ejemplo:
 ```
-New-Alias -Name getip -Value "C:\Program Files\Folder\script.ps1"
+New-Alias -Name getips -Value "C:\Program Files\Folder\getips.ps1"
 ```
 Luego podrías ejecutar el script usando el alias:
 ```
-getip -Verbose -Restart
+getips -Verbose -Restart
 ```
 
 O simplemente ejecutar
