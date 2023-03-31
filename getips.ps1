@@ -9,17 +9,18 @@ foreach ($interface in $interfaces) {
 
     # Obtener la dirección IP, la máscara de red y el gateway
     $ipaddress = Get-NetIPAddress -InterfaceIndex $interface.InterfaceIndex -AddressFamily IPv4
+    $gateway = (Get-NetRoute -InterfaceIndex $interface.InterfaceIndex -DestinationPrefix "0.0.0.0/0" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty NextHop)
 
     # Obtener los servidores DNS
     $dns = Get-DnsClientServerAddress -InterfaceIndex $interface.InterfaceIndex -AddressFamily IPv4
 
     # Crear un objeto con los datos de la interfaz
     $object = [PSCustomObject]@{
-        InterfaceAlias = $interface.InterfaceAlias
-        IPAddress = $ipaddress.IPAddress
-        PrefixLength = $ipaddress.PrefixLength
-        DefaultGateway = $ipaddress.DefaultGateway
-        DNSServer = $dns.ServerAddresses -join ", "
+        "Interfaz de red" = $interface.InterfaceAlias
+        "Dirección IP" = $ipaddress.IPAddress
+        "Prefijo" = $ipaddress.PrefixLength
+        "Gateway" = $gateway
+        "Servidores DNS" = $dns.ServerAddresses -join ", "
     }
 
     # Agregar el objeto a la tabla
@@ -27,4 +28,4 @@ foreach ($interface in $interfaces) {
 }
 
 # Imprimir la tabla ordenada por alias de interfaz
-$table | Sort-Object InterfaceAlias | Format-Table -AutoSize
+$table | Sort-Object "Interfaz de red" | Format-Table -AutoSize
